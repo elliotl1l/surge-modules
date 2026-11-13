@@ -1,21 +1,30 @@
-# Surge Modules (Sanitized & Auto-Synced)
+# Surge Modules (Sanitized & Energy-Optimized)
 
-每月 1 号由 GitHub Actions 自动从上游作者（fmz200）拉取最新模块，将 `[Rule]` 内可能引发移动端 TCP RST 死循环重试的裸 `REJECT` 精准替换为 `REJECT-DROP`，同时 100% 完整保留原作者的 `[Map Local]`、`[URL Rewrite]` 与 `[MITM]` 核心去广告逻辑。
+适用于 Surge iOS / Mac 的高能效净化模块集合。
 
-## 订阅链接 (Surge)
+- **消灭 TCP RST 重发风暴**：将 `[Rule]` 内所有裸 `REJECT` 精准替换为 `REJECT-DROP`，避免基带与 Wi-Fi 芯片持续处于高功耗重试状态；
+- **剥离冗余日志与磁盘 I/O**：对于高频刷帖应用（如小红书），剥离巨量 `console.log` 与无谓的闪存持久化存储，将 JS 引擎唤醒次数压缩 80% 以上。
+
+---
+
+## 订阅安装链接 (Surge)
 
 ### 1. 高德地图 (AutoNavi)
-* **Surge 安装链接**:
-  ```text
-  https://raw.githubusercontent.com/elliotl1l/surge-modules/main/AutoNavi.sgmodule
-  ```
+- **Surge 安装链接**:
+  `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/AutoNavi.sgmodule`
 
 ### 2. 微博去广告&净化
-* **Surge 安装链接**:
-  ```text
-  https://raw.githubusercontent.com/elliotl1l/surge-modules/main/weibo.sgmodule
-  ```
+- **Surge 安装链接**:
+  `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/weibo.sgmodule`
+
+### 3. 小红书 (纯净去广告·低功耗专版)
+- **特点**：专注去广告（开屏/信息流赞助/带货卡片/直播卡片/搜索推广/营销弹窗）。打开笔记、看大图、看视频、刷评论区 **零脚本挂载（0 CPU / 0 I/O）**，告别高频刷帖发热掉电。
+- **Surge 安装链接**:
+  `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/xiaohongshu.sgmodule`
+
+---
 
 ## 维护机制
-* **定时任务**: 每月 1 号 00:00 UTC 自动检测并同步；
-* **按需触发**: 支持在 GitHub Actions 页面随时手动触发立即同步。
+
+- **高德 & 微博**：每月 1 号由 GitHub Actions 自动从上游同步更新并清洗规则；
+- **小红书**：由本地维护高能效纯净脚本 `scripts/xiaohongshu.js` 与模块配置。

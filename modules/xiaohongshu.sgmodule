@@ -1,0 +1,43 @@
+#!name=小红书 (纯净去广告版)
+#!desc=专为高频刷帖能效优化：专注去广告（开屏/信息流赞助/搜索推广/营销弹窗），剥离去水印/实况提取等重型磁盘 I/O 与日志开销，规则全量采用 REJECT-DROP 防重发风暴。
+#!author=elliotl1l
+#!category=去广告
+
+[Rule]
+DOMAIN,ads-img-qc.xhscdn.com,REJECT-DROP
+DOMAIN,ads-video-al.xhscdn.com,REJECT-DROP
+DOMAIN,ads-video-qc.xhscdn.com,REJECT-DROP
+DOMAIN,t-ads.xiaohongshu.com,REJECT-DROP
+DOMAIN,ads-vp5.xhscdn.com,REJECT-DROP
+DOMAIN,ads-img-al.xhscdn.com,REJECT-DROP
+DOMAIN,apm-native.xiaohongshu.com,REJECT-DROP
+DOMAIN,spider-tracker.xiaohongshu.com,REJECT-DROP
+DOMAIN,trace.rtbasia.com,REJECT-DROP
+AND,((PROTOCOL,QUIC),(DOMAIN-SUFFIX,xiaohongshu.com)),REJECT-DROP
+
+[Map Local]
+# 惊喜弹窗 / 营销盒子
+^https:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v1\/surprisebox\/(?:get_style|open|submit_action) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https?:\/\/www\.(xiaohongshu|rnote)\.com\/api\/marketing\/box\/trigger\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+# 信息流引导 / 推荐横幅
+^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/note\/guide\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/note\/detailfeed\/preload\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/guide\/user_banner data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+^https?:\/\/www\.(xiaohongshu|rnote)\.com\/api\/sns\/(v\d+\/ads\/resource|v\d+\/hey\/\w+\/hey_gallery) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[Script]
+# 开屏广告与系统配置
+小红书开屏配置 = type=http-response, pattern=^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/system_service\/(config|splash_config), script-path=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/scripts/xiaohongshu.js, requires-body=true, max-size=131072, timeout=10
+
+# 搜索页推广与发现
+小红书搜索页 = type=http-response, pattern=^https?:\/\/(so|edith)\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/search\/(banner_list|hot_list|hint|trending|notes), script-path=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/scripts/xiaohongshu.js, requires-body=true, max-size=262144, timeout=10
+
+# 首页瀑布流与关注流推广过滤
+小红书信息流 = type=http-response, pattern=^https?:\/\/(edith|rec|www)\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/(homefeed|followfeed), script-path=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/scripts/xiaohongshu.js, requires-body=true, max-size=524288, timeout=10
+
+# 详情页挂件净化
+小红书详情页挂件 = type=http-response, pattern=^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/note\/widgets, script-path=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/scripts/xiaohongshu.js, requires-body=true, max-size=65536, timeout=10
+
+[MITM]
+hostname = %APPEND% edith.xiaohongshu.com, www.xiaohongshu.com, rec.xiaohongshu.com, so.xiaohongshu.com, edith.rnote.com, www.rnote.com, rec.rnote.com, so.rnote.com
