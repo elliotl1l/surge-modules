@@ -4,6 +4,7 @@
 #!category=去广告
 
 [Rule]
+DOMAIN-WILDCARD,ads-*.xhscdn.com,REJECT-DROP
 DOMAIN,ads-img-qc.xhscdn.com,REJECT-DROP
 DOMAIN,ads-video-al.xhscdn.com,REJECT-DROP
 DOMAIN,ads-video-qc.xhscdn.com,REJECT-DROP
