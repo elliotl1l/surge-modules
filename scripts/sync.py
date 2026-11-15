@@ -32,8 +32,8 @@ def sanitize(name, url):
 
         # 1. 过滤 AutoNavi 致命破坏规则
         if name == "AutoNavi.sgmodule":
-            # 剔除导致打车/顺风车挂死的初始化域名
-            if re.search(r",apiinit\.amap\.com,", line) or re.search(r",aboard\.apilocate\.amap\.com,", line):
+            # 剔除导致打车/顺风车挂死的初始化域名与 H5 页面容器
+            if re.search(r",(apiinit|aboard\.apilocate|page)\.amap\.com,", line):
                 continue
             # 修复将所有增值业务(打车/顺风车)一刀切拦截的粗暴规则
             if in_rewrite and re.search(r"\^https\?:\\/\\/m5\\.amap\\.com\\/ws\\/valueadded\\/ - reject", line):

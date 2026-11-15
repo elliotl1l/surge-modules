@@ -16,7 +16,6 @@ DOMAIN,logs.amap.com,REJECT-DROP
 DOMAIN-SUFFIX,dualstack-logs.amap.com,REJECT-DROP
 DOMAIN-SUFFIX,logs.amap.com,REJECT-DROP
 DOMAIN-SUFFIX,optimus-ads.amap.com,REJECT-DROP
-DOMAIN-SUFFIX,page.amap.com,REJECT-DROP
 DOMAIN,optimus-ads.amap.com,REJECT-DROP
 DOMAIN,optimus-ads.amap.com.w.alikunlun.com,REJECT-DROP
 DOMAIN-SUFFIX,shouji.sougou.com,REJECT-DROP
