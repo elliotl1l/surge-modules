@@ -10,7 +10,8 @@
 
 
 [Rule]
-DOMAIN-SUFFIX,ad.doubanio.com,REJECT-DROP
+DOMAIN-SUFFIX,erebor.douban.com,REJECT
+DOMAIN-SUFFIX,ad.doubanio.com,REJECT
 
 [URL Rewrite]
 ^https?:\/\/img\d\.doubanio\.com\/view\/dale-online\/dale_ad\/ - reject

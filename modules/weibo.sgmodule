@@ -12,8 +12,8 @@
 
 [Rule]
 # 收集用户信息，上传用户日志的请求
-URL-REGEX,"^https?:\/\/api\.weibo\.cn\/2\/(push\/active|client\/addlog_batch|ad\/preload)",REJECT-DROP
-URL-REGEX,"^https?:\/\/api-cloudim\.api\.weibo\.com\/v1\/log\/",REJECT-DROP
+URL-REGEX,"^https?:\/\/api\.weibo\.cn\/2\/(push\/active|client\/addlog_batch|ad\/preload)",REJECT
+URL-REGEX,"^https?:\/\/api-cloudim\.api\.weibo\.com\/v1\/log\/",REJECT
 # 微博开屏广告
 DOMAIN-SUFFIX,biz.weibo.com,REJECT-DROP
 DOMAIN,bootpreload.uve.weibo.com,REJECT-DROP
@@ -24,8 +24,8 @@ DOMAIN-SUFFIX,zymo.mps.weibo.com,REJECT-DROP
 DOMAIN-SUFFIX,weibomingzi.com,REJECT-DROP
 DOMAIN-SUFFIX,sdkapp.uve.weibo.com,REJECT-DROP
 DOMAIN-SUFFIX,promote.biz.weibo.cn,REJECT-DROP
-DOMAIN-SUFFIX,gw5.push.mcp.weibo.cn,REJECT-DROP
-DOMAIN-SUFFIX,gw6.push.mcp.weibo.cn,REJECT-DROP
+DOMAIN-SUFFIX,gw5.push.mcp.weibo.cn,REJECT
+DOMAIN-SUFFIX,gw6.push.mcp.weibo.cn,REJECT
 DOMAIN-SUFFIX,game.weibo.cn,REJECT-DROP
 DOMAIN-SUFFIX,adimg.uve.weibo.com,REJECT-DROP
 DOMAIN-SUFFIX,game.weibo.com,REJECT-DROP
@@ -33,7 +33,7 @@ DOMAIN-SUFFIX,ads.viber.com,REJECT-DROP
 DOMAIN-SUFFIX,ads-d.viber.com,REJECT-DROP
 DOMAIN-SUFFIX,ads.aws.viber.com,REJECT-DROP
 DOMAIN-SUFFIX,alitui.weibo.com,REJECT-DROP
-DOMAIN-SUFFIX,dp.im.weibo.cn,REJECT-DROP
+DOMAIN-SUFFIX,dp.im.weibo.cn,REJECT
 DOMAIN-SUFFIX,biz.weibo.com.cn,REJECT-DROP
 DOMAIN-SUFFIX,click.uve.weibo.com,REJECT-DROP
 DOMAIN-SUFFIX,wax.weibo.com,REJECT-DROP
@@ -45,7 +45,7 @@ DOMAIN-SUFFIX,tui.weibo.com,REJECT-DROP
 DOMAIN-SUFFIX,wax.weibo.com.cn,REJECT-DROP
 DOMAIN-SUFFIX,ad.weibo.com,REJECT-DROP
 # 屏蔽信息收集
-DOMAIN,datacollection.uve.weibo.com,REJECT-DROP
+DOMAIN,datacollection.uve.weibo.com,REJECT
 DOMAIN,adpinpai.video.weibocdn.com,REJECT-DROP
 
 [URL Rewrite]

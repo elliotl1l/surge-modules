@@ -11,10 +11,10 @@
 
 [Rule]
 DOMAIN-SUFFIX,adiu.amap.com,REJECT-DROP
-DOMAIN,icloud-amap.com,REJECT-DROP
-DOMAIN,logs.amap.com,REJECT-DROP
-DOMAIN-SUFFIX,dualstack-logs.amap.com,REJECT-DROP
-DOMAIN-SUFFIX,logs.amap.com,REJECT-DROP
+DOMAIN,icloud-amap.com,REJECT
+DOMAIN,logs.amap.com,REJECT
+DOMAIN-SUFFIX,dualstack-logs.amap.com,REJECT
+DOMAIN-SUFFIX,logs.amap.com,REJECT
 DOMAIN-SUFFIX,optimus-ads.amap.com,REJECT-DROP
 DOMAIN,optimus-ads.amap.com,REJECT-DROP
 DOMAIN,optimus-ads.amap.com.w.alikunlun.com,REJECT-DROP
