@@ -3,21 +3,49 @@ import re, urllib.request, os
 MODULES = {
     "AutoNavi.sgmodule": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/split/partG/AutoNavi.sgmodule",
     "weibo.sgmodule": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/weibo.module",
+    "Douban.sgmodule": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/split/partD/Douban.sgmodule",
 }
 
-def sanitize(url):
+def sanitize(name, url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     content = urllib.request.urlopen(req, timeout=15).read().decode("utf-8")
     lines = content.splitlines()
     in_rule = False
+    in_rewrite = False
     out = []
+    
     for line in lines:
-        if line.strip().startswith("["):
-            in_rule = (line.strip() == "[Rule]")
-        elif in_rule:
-            if re.search(r",REJECT(\b|$)", line) and not re.search(r"REJECT-(DROP|NO-DROP|200|TINYGIF)", line):
+        stripped = line.strip()
+        if stripped.startswith("["):
+            in_rule = (stripped == "[Rule]")
+            in_rewrite = (stripped == "[URL Rewrite]")
+            out.append(line)
+            continue
+            
+        # 1. 过滤 AutoNavi 致命破坏规则
+        if name == "AutoNavi.sgmodule":
+            # 剔除导致打车/顺风车挂死的初始化域名
+            if re.search(r",apiinit\.amap\.com,", line) or re.search(r",aboard\.apilocate\.amap\.com,", line):
+                continue
+            # 修复将所有增值业务(打车/顺风车)一刀切拦截的粗暴规则
+            if in_rewrite and re.search(r"\^https\?:\\\/\\\/m5\\\.amap\\\.com\\\/ws\\\/valueadded\\\/ - reject", line):
+                line = "^https?:\\/\\/m5\\.amap\\.com\\/ws\\/valueadded\\/alimama\\/splash_screen - reject"
+
+        # 2. 过滤 Douban 摧毁 JSSDK/鉴权的整域拦截
+        if name == "Douban.sgmodule":
+            if in_rule and re.search(r"DOMAIN-SUFFIX,erebor\.douban\.com", line):
+                continue
+
+        # 3. 移动端规则转换：广告拦截转 REJECT-DROP，但严禁将 QUIC / APM 转为 DROP
+        if in_rule:
+            if "PROTOCOL,QUIC" in line or "apm-native" in line:
+                if ",REJECT-DROP" in line:
+                    line = line.replace(",REJECT-DROP", ",REJECT")
+            elif re.search(r",REJECT(\b|$)", line) and not re.search(r"REJECT-(DROP|NO-DROP|200|TINYGIF)", line):
                 line = re.sub(r",REJECT\b", ",REJECT-DROP", line)
+                
         out.append(line)
+        
     return "\n".join(out) + "\n"
 
 def main():
@@ -25,8 +53,7 @@ def main():
     for name, url in MODULES.items():
         print(f"Syncing {name} from {url}...")
         try:
-            cleaned = sanitize(url)
-            # Write to modules/ and root
+            cleaned = sanitize(name, url)
             with open(f"modules/{name}", "w", encoding="utf-8") as f:
                 f.write(cleaned)
             with open(name, "w", encoding="utf-8") as f:

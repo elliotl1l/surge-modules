@@ -1,20 +1,20 @@
 #!name=小红书 (纯净去广告版)
-#!desc=专为高频刷帖能效优化：专注去广告（开屏/信息流赞助/搜索推广/营销弹窗），剥离去水印/实况提取等重型磁盘 I/O 与日志开销，规则全量采用 REJECT-DROP 防重发风暴。
+#!desc=专为高频刷帖能效优化：专注去广告（开屏/信息流赞助/搜索推广/营销弹窗），剥离去水印/实况提取等重型磁盘 I/O，移除破坏性 preload Map Local，QUIC 与 APM 采用瞬时 REJECT 避免 3 秒卡顿与连接池挂死。
 #!author=elliotl1l
 #!category=去广告
 
 [Rule]
-DOMAIN-WILDCARD,ads-*.xhscdn.com,REJECT-DROP
-DOMAIN,ads-img-qc.xhscdn.com,REJECT-DROP
-DOMAIN,ads-video-al.xhscdn.com,REJECT-DROP
-DOMAIN,ads-video-qc.xhscdn.com,REJECT-DROP
-DOMAIN,t-ads.xiaohongshu.com,REJECT-DROP
-DOMAIN,ads-vp5.xhscdn.com,REJECT-DROP
-DOMAIN,ads-img-al.xhscdn.com,REJECT-DROP
-DOMAIN,apm-native.xiaohongshu.com,REJECT-DROP
-DOMAIN,spider-tracker.xiaohongshu.com,REJECT-DROP
-DOMAIN,trace.rtbasia.com,REJECT-DROP
-AND,((PROTOCOL,QUIC),(DOMAIN-SUFFIX,xiaohongshu.com)),REJECT-DROP
+DOMAIN-WILDCARD,ads-*.xhscdn.com,REJECT
+DOMAIN,ads-img-qc.xhscdn.com,REJECT
+DOMAIN,ads-video-al.xhscdn.com,REJECT
+DOMAIN,ads-video-qc.xhscdn.com,REJECT
+DOMAIN,t-ads.xiaohongshu.com,REJECT
+DOMAIN,ads-vp5.xhscdn.com,REJECT
+DOMAIN,ads-img-al.xhscdn.com,REJECT
+DOMAIN,apm-native.xiaohongshu.com,REJECT
+DOMAIN,spider-tracker.xiaohongshu.com,REJECT
+DOMAIN,trace.rtbasia.com,REJECT
+AND,((PROTOCOL,QUIC),(DOMAIN-SUFFIX,xiaohongshu.com)),REJECT
 
 [Map Local]
 # 惊喜弹窗 / 营销盒子
@@ -23,7 +23,6 @@ AND,((PROTOCOL,QUIC),(DOMAIN-SUFFIX,xiaohongshu.com)),REJECT-DROP
 
 # 信息流引导 / 推荐横幅
 ^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/note\/guide\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
-^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/note\/detailfeed\/preload\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 ^https?:\/\/edith\.(xiaohongshu|rnote)\.com\/api\/sns\/v\d+\/guide\/user_banner data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 ^https?:\/\/www\.(xiaohongshu|rnote)\.com\/api\/sns\/(v\d+\/ads\/resource|v\d+\/hey\/\w+\/hey_gallery) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 

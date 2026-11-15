@@ -22,9 +22,14 @@
 - **Surge 安装链接**:
   `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/xiaohongshu.sgmodule`
 
+### 4. 豆瓣 (精简去广告)
+- **特点**：移除豆瓣开屏与信息流广告，放行 `erebor.douban.com` 保证 Web JSSDK、动态鉴权与微信内置浏览器正常打开，仅在 URL Rewrite 精准过滤广告计数。
+- **Surge 安装链接**:
+  `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/Douban.sgmodule`
+
 ---
 
 ## 维护机制
 
-- **高德 & 微博**：每月 1 号由 GitHub Actions 自动从上游同步更新并清洗规则；
+- **高德、微博、豆瓣**：每月 1 号由 GitHub Actions 自动从上游同步更新并清洗规则；
 - **小红书**：由本地维护高能效纯净脚本 `scripts/xiaohongshu.js` 与模块配置。
