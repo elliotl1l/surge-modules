@@ -5,16 +5,19 @@
 #!raw-url=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/xiaohongshu.sgmodule
 
 [Rule]
-DOMAIN-WILDCARD,ads-*.xhscdn.com,REJECT
-DOMAIN,ads-img-qc.xhscdn.com,REJECT
-DOMAIN,ads-video-al.xhscdn.com,REJECT
-DOMAIN,ads-video-qc.xhscdn.com,REJECT
-DOMAIN,t-ads.xiaohongshu.com,REJECT
-DOMAIN,ads-vp5.xhscdn.com,REJECT
-DOMAIN,ads-img-al.xhscdn.com,REJECT
+# 纯广告与统计追踪：采用 REJECT-DROP 静默丢弃，迫使 SDK 指数退避，基带即刻休眠（第一层）
+DOMAIN-WILDCARD,ads-*.xhscdn.com,REJECT-DROP
+DOMAIN,ads-img-qc.xhscdn.com,REJECT-DROP
+DOMAIN,ads-video-al.xhscdn.com,REJECT-DROP
+DOMAIN,ads-video-qc.xhscdn.com,REJECT-DROP
+DOMAIN,t-ads.xiaohongshu.com,REJECT-DROP
+DOMAIN,ads-vp5.xhscdn.com,REJECT-DROP
+DOMAIN,ads-img-al.xhscdn.com,REJECT-DROP
+DOMAIN,spider-tracker.xiaohongshu.com,REJECT-DROP
+DOMAIN,trace.rtbasia.com,REJECT-DROP
+# APM 崩溃监控：采用 0ms REJECT 快速释放 Socket，杜绝 75 秒后台挂起吃满并发连接池（第三层）
 DOMAIN,apm-native.xiaohongshu.com,REJECT
-DOMAIN,spider-tracker.xiaohongshu.com,REJECT
-DOMAIN,trace.rtbasia.com,REJECT
+# QUIC 降级探测：采用 0ms REJECT（ICMP Port Unreachable），无缝回退 TCP 杜绝进帖卡顿 3 秒（第二层）
 AND,((PROTOCOL,QUIC),(DOMAIN-SUFFIX,xiaohongshu.com)),REJECT
 
 [Map Local]
