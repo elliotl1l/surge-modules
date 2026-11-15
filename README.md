@@ -22,14 +22,10 @@
 - **Surge 安装链接**:
   `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/xiaohongshu.sgmodule`
 
-### 4. 豆瓣 (精简去广告·奶思原版逻辑)
-- **特点**：遵循奶思原版开屏与推荐广告过滤规则，保证基础鉴权与动态页面稳定。
-- **Surge 安装链接**:
-  `https://raw.githubusercontent.com/elliotl1l/surge-modules/main/Douban.sgmodule`
-
 ---
 
 ## 维护机制
 
-- **高德、微博、豆瓣**：每月 1 号由 GitHub Actions 自动从上游同步，并经由 `scripts/sync.py` 执行四层决策矩阵清洗规则；
-- **小红书**：本地独立自研与维护轻量纯净脚本 `scripts/xiaohongshu.js` 与模块配置，不受上游污染。
+- **高德、微博**：每月 1 号由 GitHub Actions 自动从上游同步，并经由 `scripts/sync.py` 执行四层决策矩阵清洗规则；
+- **小红书**：本地独立自研与维护轻量纯净脚本 `scripts/xiaohongshu.js` 与模块配置，不受上游污染；
+- **豆瓣**：遵循原版开箱即用原则，直接订阅奶思官方原版，仓库不再维护定制副本，避免维护分歧。

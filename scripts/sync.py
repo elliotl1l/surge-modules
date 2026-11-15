@@ -5,7 +5,6 @@ import re, urllib.request, os, sys
 UPSTREAM_MODULES = {
     "AutoNavi.sgmodule": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/split/partG/AutoNavi.sgmodule",
     "weibo.sgmodule": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/weibo.module",
-    "Douban.sgmodule": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Surge/module/split/partD/Douban.sgmodule",
 }
 
 # SELF_MAINTAINED_MODULES: 本地自研独立维护，严禁被上游抓取覆盖
@@ -19,7 +18,6 @@ def apply_decision_matrix(line, name):
     - Tier 2 (QUIC): 强制 REJECT (ICMP Port Unreachable 瞬时降级 TCP，防 3 秒卡死)
     - Tier 3 (APM/日志): 强制 REJECT (TCP RST 0ms 释放 Socket，防连接池排队挂死)
     - Tier 4 (Push/IM/核心通信/URL-REGEX): 强制 REJECT (防 75s 长连接超时与推送延时)
-    - 豆瓣 (Douban): 严格尊重用户意图，采用奶思原版策略，不篡改规则
     - Tier 1 (纯广告/三方广告联盟 SDK): 转 REJECT-DROP (逼退 SDK 重试，基带即刻休眠)
     """
     stripped = line.strip()
@@ -30,11 +28,7 @@ def apply_decision_matrix(line, name):
     if "PROTOCOL,QUIC" in line:
         return line.replace(",REJECT-DROP", ",REJECT")
 
-    # 2. 豆瓣模块：尊重用户指示，保持奶思原版策略，不转 REJECT-DROP
-    if name == "Douban.sgmodule":
-        return line
-
-    # 3. 核心通信、推送网关、IM 聊天通道、主域名 URL-REGEX（第四层）：严禁 DROP！
+    # 2. 核心通信、推送网关、IM 聊天通道、主域名 URL-REGEX（第四层）：严禁 DROP！
     # 典型：gw5.push.mcp.weibo.cn, dp.im.weibo.cn, api-cloudim.api.weibo.com, api.weibo.cn
     tier4_patterns = [
         "push", ".im.", "cloudim", "api.weibo.cn", "URL-REGEX",
