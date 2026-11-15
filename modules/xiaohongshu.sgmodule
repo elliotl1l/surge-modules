@@ -2,6 +2,7 @@
 #!desc=专为高频刷帖能效优化：专注去广告（开屏/信息流赞助/搜索推广/营销弹窗），剥离去水印/实况提取等重型磁盘 I/O，移除破坏性 preload Map Local，QUIC 与 APM 采用瞬时 REJECT 避免 3 秒卡顿与连接池挂死。
 #!author=elliotl1l
 #!category=去广告
+#!raw-url=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/xiaohongshu.sgmodule
 
 [Rule]
 DOMAIN-WILDCARD,ads-*.xhscdn.com,REJECT

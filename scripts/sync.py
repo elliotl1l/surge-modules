@@ -12,6 +12,7 @@ def sanitize(name, url):
     lines = content.splitlines()
     in_rule = False
     in_rewrite = False
+    has_raw_url = False
     out = []
     
     for line in lines:
@@ -22,13 +23,20 @@ def sanitize(name, url):
             out.append(line)
             continue
             
+        # 0. 规范化 raw-url 永远指向用户私有仓库，确保模块自动更新不脱离真值源
+        if stripped.startswith("#!raw-url="):
+            line = f"#!raw-url=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/{name}"
+            has_raw_url = True
+            out.append(line)
+            continue
+
         # 1. 过滤 AutoNavi 致命破坏规则
         if name == "AutoNavi.sgmodule":
             # 剔除导致打车/顺风车挂死的初始化域名
             if re.search(r",apiinit\.amap\.com,", line) or re.search(r",aboard\.apilocate\.amap\.com,", line):
                 continue
             # 修复将所有增值业务(打车/顺风车)一刀切拦截的粗暴规则
-            if in_rewrite and re.search(r"\^https\?:\\\/\\\/m5\\\.amap\\\.com\\\/ws\\\/valueadded\\\/ - reject", line):
+            if in_rewrite and re.search(r"\^https\?:\\/\\/m5\\.amap\\.com\\/ws\\/valueadded\\/ - reject", line):
                 line = "^https?:\\/\\/m5\\.amap\\.com\\/ws\\/valueadded\\/alimama\\/splash_screen - reject"
 
         # 2. 过滤 Douban 摧毁 JSSDK/鉴权的整域拦截
@@ -45,6 +53,15 @@ def sanitize(name, url):
                 line = re.sub(r",REJECT\b", ",REJECT-DROP", line)
                 
         out.append(line)
+
+    if not has_raw_url:
+        # 在头部插入 raw-url
+        insert_idx = 1
+        for i, l in enumerate(out):
+            if l.startswith("#!name="):
+                insert_idx = i + 1
+                break
+        out.insert(insert_idx, f"#!raw-url=https://raw.githubusercontent.com/elliotl1l/surge-modules/main/{name}")
         
     return "\n".join(out) + "\n"
 
