@@ -15,8 +15,8 @@ DOMAIN,ads-vp5.xhscdn.com,REJECT-DROP
 DOMAIN,ads-img-al.xhscdn.com,REJECT-DROP
 DOMAIN,spider-tracker.xiaohongshu.com,REJECT-DROP
 DOMAIN,trace.rtbasia.com,REJECT-DROP
-# APM 崩溃监控：采用 0ms REJECT 快速释放 Socket，杜绝 75 秒后台挂起吃满并发连接池（第三层）
-DOMAIN,apm-native.xiaohongshu.com,REJECT
+# APM 崩溃监控：采用 DIRECT 放行，彻底根治客户端遭遇 TCP RST 引发的 2,500+ 次重试风暴与蜂窝耗电
+DOMAIN,apm-native.xiaohongshu.com,DIRECT
 # QUIC 降级探测：采用 0ms REJECT（ICMP Port Unreachable），无缝回退 TCP 杜绝进帖卡顿 3 秒（第二层）
 AND,((PROTOCOL,QUIC),(DOMAIN-SUFFIX,xiaohongshu.com)),REJECT
 

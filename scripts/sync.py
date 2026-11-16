@@ -39,8 +39,9 @@ def apply_decision_matrix(line, name):
 
     # 4. APM 崩溃监控、系统与应用日志、云同步（第三层）：必须 REJECT，0ms 释放连接池！
     # 典型：logs.amap.com, dualstack-logs.amap.com, icloud-amap.com, datacollection
+    # 注：小红书 apm-native 遭遇 REJECT 会陷入高频重试风暴，改走置顶 DIRECT 放行，不归入此处
     tier3_patterns = [
-        "apm-native", "logs.amap.com", "icloud-amap.com", "datacollection"
+        "logs.amap.com", "icloud-amap.com", "datacollection"
     ]
     if any(k in line for k in tier3_patterns):
         return re.sub(r",REJECT-DROP\b", ",REJECT", line)
